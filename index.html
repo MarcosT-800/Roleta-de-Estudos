@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roda de Desafios de Estudo</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root {
+            --foreground-rgb: 0, 0, 0;
+            --background-start-rgb: 214, 219, 220;
+            --background-end-rgb: 255, 255, 255;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --foreground-rgb: 255, 255, 255;
+                --background-start-rgb: 0, 0, 0;
+                --background-end-rgb: 0, 0, 0;
+            }
+        }
+
+        body {
+            color: rgb(var(--foreground-rgb));
+            background: linear-gradient(to bottom,
+                    transparent,
+                    rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+        }
+    #roleta {
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body class="flex min-h-screen flex-col items-center justify-between p-24 bg-gradient-to-b from-transparent to-white dark:from-black">
+    <h1 class="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none text-6xl font-semibold">Roda de Desafios de Estudo</h1>
+    <div id="roleta" class="mt-8">
+        <canvas id="canvas" width="200" height="200"></canvas>
+        <button onclick="girarRoda()" class="inline-flex items-center ring-2 p-2 px-8 rounded-md ring-purple-700 hover:bg-purple-700 hover:text-white dark:hover:text-black">Girar</button>
+        <p id="desafio" class="mt-4 text-lg font-semibold"></p>
+    </div>
+
+
+    <script>
+        const desafios = [
+            "Resumir um texto",
+            "Fazer um mapa mental",
+            "Responder questões",
+            "Criar flashcards",
+            "Fazer um teste prático",
+            "Revisar anotações",
+            "Ensinar o conteúdo a alguém",
+            "Criar um resumo em áudio",
+            "Fazer exercícios adicionais",
+            "Assistir a uma aula relacionada"
+        ];
+
+        function girarRoda() {
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            const numDesafios = desafios.length;
+            const anguloPorDesafio = (2 * Math.PI) / numDesafios;
+
+            // Limpar o canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Girar a roleta
+            const giroAleatorio = Math.random() * 2 * Math.PI;
+            const anguloFinal = giroAleatorio + (2 * Math.PI * 3); // Gira cerca de 3 vezes
+
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2, canvas.height / 2);
+            ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, giroAleatorio, anguloFinal);
+            ctx.fillStyle = "#FFD700"; // Cor dourada
+            ctx.fill();
+            ctx.strokeStyle = "#000";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Encontrar o desafio selecionado
+            const indiceDesafioSelecionado = Math.floor((anguloFinal % (2 * Math.PI)) / anguloPorDesafio);
+            const desafioSelecionado = desafios[indiceDesafioSelecionado];
+
+            // Exibir o desafio selecionado
+            document.getElementById("desafio").innerText = "Desafio selecionado: " + desafioSelecionado;
+        }
+    </script>
+</body>
+</html>
